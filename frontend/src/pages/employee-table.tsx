@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { columns, Payment } from "@/components/employees/columns";
+import { columns, Employee } from "@/components/employees/columns";
 import { DataTable } from "@/components/employees/data-table";
 
-async function getData(): Promise<Payment[]> {
+async function getData(): Promise<Employee[]> {
   // Fetch data from your API here.
   return [
     {
@@ -121,7 +121,7 @@ async function getData(): Promise<Payment[]> {
 }
 
 export default function EmployeeData() {
-  const [data, setData] = useState<Payment[]>([]);
+  const [data, setData] = useState<Employee[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {

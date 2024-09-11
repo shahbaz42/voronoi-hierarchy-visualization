@@ -12,17 +12,17 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Payment = {
+export type Employee = {
   id: string;
   name: string;
-  department: "CS" | "Mechanical" | "Civil" | "Electrical" | "Chemical";
+  department: "CS" | "Mechanical" | "Civil" | "Electrical" | "Chemical" | "Arts" | "Medical" | "Commerce";
   specialization: string;
   email: string;
   profile: string;
 };
 
 // 1, Shahbaz, shahbaz@email.com, https://www.linkedin.com/in/shahbaz42, CS, Software Engineering
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Employee>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => {

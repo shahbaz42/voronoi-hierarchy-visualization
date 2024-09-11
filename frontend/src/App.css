@@ -1,0 +1,199 @@
+/* For screens wider than 1080px */
+.parent-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.left-container {
+  height: 100vh;
+  min-width: 450px; /* Fixed width for left container */
+  width: calc(100vw - 450px); /* Left container takes remaining width */
+}
+
+.right-container {
+  height: 100vh;
+  width: 450px; /* Fixed width for right container */
+}
+
+/* For screens narrower than 1080px */
+@media (max-width: 1080px) {
+  .parent-container {
+    flex-direction: column; /* Stack containers vertically */
+  }
+
+  .left-container,
+  .right-container {
+    width: 100%; /* Make both containers full width */
+    min-width: 0; /* Remove any minimum width constraints */
+  }
+
+  .left-container {
+    height: 80vh;
+  }
+}
+
+.static-header-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.employee-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.image-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 90px;
+  min-width: 90px;
+  max-height: 90px;
+  max-width: 90px;
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+  background-color: #ffffff;
+}
+
+.image-box img {
+  width: 100%;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+}
+
+.employee-details {
+  color: #4e4e4e;
+  font-family: "Barlow", sans-serif;
+  font-size: 26px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 31px;
+  /* margin-top: 28px; */
+  margin-left: 22px;
+}
+
+.category-heading,
+.industry-heading,
+.investment-details-heading {
+  color: #585858;
+  font-family: "Barlow", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 20px;
+}
+
+.static-content1 {
+  color: #353535;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Barlow", sans-serif;
+  letter-spacing: 0;
+  line-height: 20px;
+  min-width: 215px;
+  max-width: 215px;
+}
+
+.other-details-box {
+}
+.other-details-content {
+  margin-top: 16.18px;
+}
+.other-details {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 13px;
+}
+
+.other-value {
+  color: #585858;
+  font-family: "Barlow", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+  padding-right: 5px;
+}
+
+.other-title {
+  opacity: 0.8;
+  color: #585858;
+  font-family: "Barlow", sans-serif;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 20px;
+  min-width: 101px;
+  max-width: 101px;
+}
+
+.other-devider {
+  color: #585858;
+  font-family: "Barlow", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 20px;
+  margin-left: 15px;
+  margin-right: 31px;
+}
+
+.static-content {
+  color: #353535;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Barlow", sans-serif;
+  letter-spacing: 0;
+  line-height: 20px;
+  min-width: 200px;
+  max-width: 200px;
+}
+
+.category-box {
+}
+.category-heading,
+.industry-heading,
+.investment-details-heading {
+  color: #585858;
+  font-family: "Barlow", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 20px;
+}
+.categories {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.category {
+  height: 28px;
+  /* width: 147px; */
+  /* opacity: 0.2; */
+  border-radius: 2px;
+  background-color: #d8d8d833;
+  color: #585858;
+  font-family: "Barlow", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 20px;
+  padding: 4px 8px;
+  display: inline;
+  margin-right: 16px;
+  margin-bottom: 10px;
+}
+.category-devider {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
