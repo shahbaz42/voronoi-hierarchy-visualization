@@ -43,6 +43,7 @@ function nestData(flatData: Employee[]) {
     if (!departmentGroup.specializationMap[item.specialization]) {
       departmentGroup.specializationMap[item.specialization] = {
         label: item.specialization,
+        type: "specialization",
         weight: 0,
         groups: [],
       };
@@ -54,7 +55,12 @@ function nestData(flatData: Employee[]) {
       departmentGroup.specializationMap[item.specialization];
 
     // Add the subject as a group within the specialization
-    specializationGroup.groups.push({ label: item.name, weight: 0 });
+    specializationGroup.groups.push({
+      label: item.name,
+      type: "faculty",
+      data: item,
+      weight: 0,
+    });
   });
 
   // Assign weights based on the number of groups within each level
@@ -98,6 +104,42 @@ export default function VoronoiVisualization() {
   const [departments, setDepartments] = useState(0);
   const [specializations, setSpecializations] = useState(0);
 
+  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
+
+  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(
+    null
+  );
+  const [selectedDepartmentData, setSelectedDepartmentData] = useState<{
+    label: string;
+    weight: number;
+    groups: any[];
+  } | null>(null);
+
+  const [topSpecializationsOfDept, setTopSpecializationsOfDept] = useState<
+    any[]
+  >([]);
+  const [selectedSpecialization, setSelectedSpecialization] = useState<
+    string | null
+  >(null);
+  const [selectedSpecializationData, setSelectedSpecializationData] = useState<{
+    label: string;
+    weight: number;
+    groups: any[];
+  } | null>(null);
+  const [topFacultyOfSpecialization, setTopFacultyOfSpecialization] = useState<
+    any[]
+  >([]);
+
+  const [selectedFaculty, setSelectedFaculty] = useState<string | null>(null);
+  const [selectedFacultyData, setSelectedFacultyData] = useState<{
+    _id: string;
+    name: string;
+    email: string;
+    department: string;
+    specialization: string;
+    profile: string;
+  } | null>(null);
+
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
@@ -109,20 +151,65 @@ export default function VoronoiVisualization() {
   }, []);
 
   useEffect(() => {
-    const nestDat = nestData(flatData)
+    const nestDat = nestData(flatData);
 
-    setDepartments(nestDat.groups.length)
+    setDepartments(nestDat.groups.length);
 
     const numberOfSpecializations = nestDat.groups.reduce((acc, department) => {
-      return acc + department.weight
-    }, 0)
+      return acc + department.weight;
+    }, 0);
 
-    setSpecializations(numberOfSpecializations)
-
+    setSpecializations(numberOfSpecializations);
 
     const foamtree = new FoamTree({
       id: "foamtree", // The ID of the container element where the chart will render
       dataObject: nestDat, // The nested data object
+      // onGroupSelectionChanged: (event: any) => {
+      //   console.log("Selected group:", event.group.label);
+      // },
+      onGroupClick: (event: any) => {
+        console.log("Clicked group:", event.group.label);
+        console.log("event", event.group);
+        setSelectedGroup(event.group.label);
+
+        // if department is selected
+        if (
+          [
+            "Engineering",
+            "Law",
+            "Medical",
+            "Social Sciences",
+            "Civil",
+            "Commerce",
+            "CS",
+            "Architecture",
+            "Electrical",
+          ].includes(event.group.label)
+        ) {
+          setSelectedDepartment(event.group.label);
+          setSelectedDepartmentData(event.group);
+
+          // calculate top specializations
+          const specializationsSorted = event.group.groups.sort(
+            (a: any, b: any) => b.weight - a.weight
+          );
+          setTopSpecializationsOfDept(specializationsSorted.slice(0, 4));
+        } else if (event.group?.type === "specialization") {
+          setSelectedSpecialization(event.group.label);
+          setSelectedSpecializationData(event.group);
+
+          // calculate top faculty
+          const facultySorted = event.group.groups.sort(
+            (a: any, b: any) => b.weight - a.weight
+          );
+
+          setTopFacultyOfSpecialization(facultySorted.slice(0, 4));
+        } else if (event.group?.type === "faculty") {
+          setSelectedFaculty(event.group.label);
+          setSelectedFacultyData(event.group.data);
+          console.log("Selected Faculty", event.group.data);
+        }
+      },
     });
 
     // Handle window resize and adjust FoamTree size
@@ -152,59 +239,198 @@ export default function VoronoiVisualization() {
               <img className="employee-img" src={logo} />
             </div>
             <div className="employee-details">
-              Organization <br /> Faculty Details
+              Organization <br /> Details
             </div>
           </div>
 
           <hr className="header-devider mt-4"></hr>
 
-          {/* <div className="category-heading mt-4">Application Security</div> */}
-          {/* <hr className="header-devider mt-4"></hr> */}
+          {selectedGroup && (
+            <div>
+              <div className="category-heading mt-4">{selectedGroup}</div>
+              <hr className="header-devider mt-4"></hr>
+            </div>
+          )}
 
-          <div className="other-details-box">
-            <div className="other-details-content">
-              <div className="other-details">
-                <div className="static-content">Number of departments</div>
-                <div className="other-devider">:</div>
-                <div className="other-value">{departments}</div>
+          {!selectedGroup && (
+            // if no group is selected
+            <div>
+              <div className="other-details-box">
+                <div className="other-details-content">
+                  <div className="other-details">
+                    <div className="static-content">Number of departments</div>
+                    <div className="other-devider">:</div>
+                    <div className="other-value">{departments}</div>
+                  </div>
+                  <div className="other-details">
+                    <div className="static-content">
+                      Number of specializations
+                    </div>
+                    <div className="other-devider">:</div>
+                    <div className="other-value">{specializations}</div>
+                  </div>
+                  <div className="other-details">
+                    <div className="static-content">Number of faculty</div>
+                    <div className="other-devider">:</div>
+                    <div className="other-value">{flatData.length}</div>
+                  </div>
+                </div>
               </div>
-              <div className="other-details">
-                <div className="static-content">Number of specializations</div>
-                <div className="other-devider">:</div>
-                <div className="other-value">{specializations}</div>
+              {/* Top Departments when nothing is selected */}
+              <div className="category-box mt-8">
+                <hr className="header-devider mt-4"></hr>
+                <div className="category-heading mt-4">
+                  Top Departments
+                </div>{" "}
+                <div className="categories">
+                  <div className="category">Engineering</div>
+                  <div className="category"> Law</div>
+                  <div className="category"> Medical</div>
+                </div>
+                {/* <hr className="header-devider mt-4"></hr> */}
               </div>
-              <div className="other-details">
-                <div className="static-content">Number of faculty</div>
-                <div className="other-devider">:</div>
-                <div className="other-value">{flatData.length}</div>
+              {/* Top specializations when nothing is selected */}
+              <div className="category-box mt-8">
+                <hr className="header-devider mt-4"></hr>
+                <div className="category-heading mt-4">
+                  Top Specializations
+                </div>{" "}
+                {/* to do : calculate it programatically */}
+                <div className="categories">
+                  <div className="category">Software Engineering</div>
+                  <div className="category"> Data Science</div>
+                  <div className="category"> Finance</div>
+                </div>
+                {/* <hr className="header-devider mt-4"></hr> */}
               </div>
             </div>
-          </div>
+          )}
 
-          <div className="category-box mt-8">
-            <hr className="header-devider mt-4"></hr>
-            <div className="category-heading mt-4">Top Departments</div>{" "}
-            <div className="categories">
-              <div className="category">Engineering</div>
-              <div className="category"> Law</div>
-              <div className="category"> Medical</div>
+          {selectedDepartment &&
+            !selectedSpecialization &&
+            !selectedFaculty && (
+              <div>
+                <div className="other-details-box">
+                  <div className="other-details-content">
+                    <div className="other-details">
+                      <div className="static-content">
+                        Number of Specializations
+                      </div>
+                      <div className="other-devider">:</div>
+                      <div className="other-value">
+                        {selectedDepartmentData?.weight}
+                      </div>
+                    </div>
+                    <div className="other-details">
+                      <div className="static-content">Number of faculty</div>
+                      <div className="other-devider">:</div>
+                      <div className="other-value">
+                        {selectedDepartmentData?.groups.reduce(
+                          (acc: number, specialization: any) => {
+                            return acc + specialization.weight;
+                          },
+                          0
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Top Specializations when a department is selected */}
+                <div className="category-box mt-8">
+                  <hr className="header-devider mt-4"></hr>
+                  <div className="category-heading mt-4">
+                    Top Specializations of {selectedDepartment}
+                  </div>{" "}
+                  {/* to do : calculate it programatically */}
+                  <div className="categories">
+                    {topSpecializationsOfDept.map((specialization) => (
+                      <div className="category">{specialization.label}</div>
+                    ))}
+                  </div>
+                  {/* <hr className="header-devider mt-4"></hr> */}
+                </div>
+              </div>
+            )}
+
+          {selectedSpecialization && !selectedFaculty && (
+            <div>
+              <div className="other-details-box">
+                <div className="other-details-content">
+                  <div className="other-details">
+                    <div className="static-content">
+                      Number of Faculty of {selectedSpecialization}
+                    </div>
+                    <div className="other-devider">:</div>
+                    <div className="other-value">
+                      {selectedSpecializationData?.weight}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Top Faculy when a specialization is selected */}
+              <div className="category-box mt-8">
+                <hr className="header-devider mt-4"></hr>
+                <div className="category-heading mt-4">
+                  Top Faculties of {selectedSpecialization}
+                </div>{" "}
+                {/* to do : calculate it programatically */}
+                <div className="categories">
+                  {topFacultyOfSpecialization.map((faculty) => (
+                    <div className="category">{faculty.label}</div>
+                  ))}
+                </div>
+                {/* <hr className="header-devider mt-4"></hr> */}
+              </div>
             </div>
-            {/* <hr className="header-devider mt-4"></hr> */}
-          </div>
-            {/* to do : calculate it programatically */}
-          <div className="category-box mt-8">
-            <hr className="header-devider mt-4"></hr>
-            <div className="category-heading mt-4">
-              Top Specializations
-            </div>{" "}
-            {/* to do : calculate it programatically */}
-            <div className="categories"> 
-              <div className="category">Software Engineering</div>
-              <div className="category"> Data Science</div>
-              <div className="category"> Finance</div>
+          )}
+
+          {selectedFaculty && (
+            <div>
+              <div className="other-details-box">
+                <div className="other-details-content">
+                  <div className="other-details">
+                    <div className="static-content">
+                      Email:
+                    </div>
+                    <div className="other-devider">:</div>
+                    <div className="other-value">
+                      <a href=""> { selectedFacultyData?.email } </a>
+                    </div>
+                  </div>
+                  <div className="other-details">
+                    <div className="static-content">
+                      Profile:
+                    </div>
+                    <div className="other-devider">:</div>
+                    <div className="other-value">
+                      <a href=""> { selectedFacultyData?.profile } </a>
+                    </div>
+                  </div>
+                  <div className="other-details">
+                    <div className="static-content">
+                      Department:
+                    </div>
+                    <div className="other-devider">:</div>
+                    <div className="other-value">
+                      <a href=""> { selectedFacultyData?.department } </a>
+                    </div>
+                  </div>
+                  <div className="other-details">
+                    <div className="static-content">
+                      Specialization:
+                    </div>
+                    <div className="other-devider">:</div>
+                    <div className="other-value">
+                      <a href=""> { selectedFacultyData?.specialization } </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            {/* <hr className="header-devider mt-4"></hr> */}
-          </div>
+          )}
+
+          {/* to do : calculate it programatically */}
+
           {/* <a href="/admin" className="btn btn-primary mt-8 fixed-bottom">Admin Panel</a> */}
         </div>
       </div>
