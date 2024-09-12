@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import { ErrorHandler } from './utils';
 import { employeeRouter } from './router';
 import { connectToDatabase } from './database';
-import { EmployeeRepository, Employee } from './database';
+import cors from 'cors';
 
 const app = express();
 
@@ -20,6 +20,9 @@ app.use(
     max: 60, // 60 requests
   })
 );
+
+// allow cors all *
+app.use(cors({ origin: '*' }));
 
 // Logging and parsing
 app.use(morgan('dev'));
