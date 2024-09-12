@@ -8,6 +8,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { AuthContext } from "@/context/AuthContext"; // this has deleteEmployee(id) function
+import { useContext } from "react";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -109,7 +111,14 @@ export const columns: ColumnDef<Employee>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const employee = row.original;
+      const employee = row.original as any;
+      const { deleteEmployee } = useContext(AuthContext);
+      const handleDelete = () => {
+        if (window.confirm(`Are you sure you want to delete ${employee.name}?`)) {
+          if (deleteEmployee)
+            deleteEmployee(employee._id);
+        }
+      };
 
       return (
         <DropdownMenu>
@@ -130,7 +139,7 @@ export const columns: ColumnDef<Employee>[] = [
             >
               Copy Details
             </DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleDelete} >Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

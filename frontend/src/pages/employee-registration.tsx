@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,9 +13,13 @@ import {
 
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "@/context/AuthContext";
 
 export default function EmployeeRegistration() {
-    const apiUrl = import.meta.env.VITE_API_URL;
+
+  const { logout, token } = useContext(AuthContext);
+
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const [employee, setEmployee] = useState({
     name: "",
@@ -49,9 +53,10 @@ export default function EmployeeRegistration() {
     const config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: `${apiUrl}/employees`,
+      url: `${apiUrl}/admin/employee`,
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       data: data,
     };
@@ -60,8 +65,14 @@ export default function EmployeeRegistration() {
       await axios.request(config);
       toast.success("Employee registered successfully");
       navigate("/admin");
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        toast.error("You are not authorized to perform this action");
+        logout()
+        navigate("/login");
+      } else {
       toast.error("Failed to register employee");
+      }
       console.log(error);
     }
   };

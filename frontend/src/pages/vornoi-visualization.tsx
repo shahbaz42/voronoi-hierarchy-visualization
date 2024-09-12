@@ -84,7 +84,7 @@ async function getData(): Promise<Employee[]> {
   }
 
   try {
-    const response = await axios.get(`${apiUrl}/employees`);
+    const response = await axios.get(`${apiUrl}/admin/employee`);
     return response.data.employees;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -97,7 +97,6 @@ export default function VoronoiVisualization() {
   const [loading, setLoading] = useState<boolean>(true);
   const [departments, setDepartments] = useState(0);
   const [specializations, setSpecializations] = useState(0);
-
 
   useEffect(() => {
     async function fetchData() {

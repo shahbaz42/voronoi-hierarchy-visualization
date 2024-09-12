@@ -3,19 +3,24 @@ import "./App.css";
 import EmployeeData from "./pages/employee-table";
 import VoronoiVisualization from "./pages/vornoi-visualization";
 import EmployeeRegistration from "./pages/employee-registration";
-import { Toaster } from "react-hot-toast";
+import PrivateRoute from "./components/PrivateRoute";
+import AuthenticationPage from "./pages/login";
 
 function App() {
   return (
     <div>
-      <Toaster position="top-center" />
-      <Router>
-        <Routes>
-          <Route path="/" element={<VoronoiVisualization />} />
-          <Route path="/admin" element={<EmployeeData />} />
-          <Route path="/register" element={<EmployeeRegistration />} />
-        </Routes>
-      </Router>
+      <Routes>
+        <Route path="/" element={<VoronoiVisualization />} />
+        <Route
+          path="/admin"
+          element={<PrivateRoute element={<EmployeeData />} />}
+        />
+        <Route
+          path="/register"
+          element={<PrivateRoute element={<EmployeeRegistration />} />}
+        />
+        <Route path="login" element={<AuthenticationPage />} />
+      </Routes>
     </div>
   );
 }
