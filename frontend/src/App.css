@@ -256,3 +256,10 @@
   border-radius: 5px; /* Add rounded corners */
 }
 
+/* //hide org-logo if width is less than 1080px */
+@media (max-width: 1080px) {
+  .org-logo {
+    display: none;
+  }
+}
+

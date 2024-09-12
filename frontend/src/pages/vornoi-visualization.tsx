@@ -245,7 +245,8 @@ export default function VoronoiVisualization() {
           <div id="foamtree" style={{ width: "100%", height: "100%" }}></div>
         </div>
         <div className="right-container p-4">
-          <div className="static-header-container">
+
+          <div className="static-header-container org-logo">
             <div className="image-box">
               <img className="employee-img" src={logo} />
             </div>
