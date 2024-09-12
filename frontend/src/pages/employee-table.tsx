@@ -1,124 +1,29 @@
 import { useEffect, useState } from "react";
 import { columns, Employee } from "@/components/employees/columns";
 import { DataTable } from "@/components/employees/data-table";
+import axios from 'axios';
 
 async function getData(): Promise<Employee[]> {
-  // Fetch data from your API here.
-  return [
-    {
-      id: "1",
-      name: "Shahbaz",
-      department: "CS",
-      specialization: "Software Engineering",
-      email: "shahbaz@email.com",
-      profile: "https://www.linkedin.com/in/shahbaz42",
-    },
-    {
-      id: "2",
-      name: "Madhavan",
-      department: "Mechanical",
-      specialization: "Automobile Engineering",
-      email: "madhavan@email.com",
-      profile: "https://www.linkedin.com/in/madhavan",
-    },
-    {
-      id: "1",
-      name: "Shahbaz",
-      department: "CS",
-      specialization: "Software Engineering",
-      email: "shahbaz@email.com",
-      profile: "https://www.linkedin.com/in/shahbaz42",
-    },
-    {
-      id: "2",
-      name: "Madhavan",
-      department: "Mechanical",
-      specialization: "Automobile Engineering",
-      email: "madhavan@email.com",
-      profile: "https://www.linkedin.com/in/madhavan",
-    },
-    {
-      id: "1",
-      name: "Shahbaz",
-      department: "CS",
-      specialization: "Software Engineering",
-      email: "shahbaz@email.com",
-      profile: "https://www.linkedin.com/in/shahbaz42",
-    },
-    {
-      id: "2",
-      name: "Madhavan",
-      department: "Mechanical",
-      specialization: "Automobile Engineering",
-      email: "madhavan@email.com",
-      profile: "https://www.linkedin.com/in/madhavan",
-    },
-    {
-      id: "1",
-      name: "Shahbaz",
-      department: "CS",
-      specialization: "Software Engineering",
-      email: "shahbaz@email.com",
-      profile: "https://www.linkedin.com/in/shahbaz42",
-    },
-    {
-      id: "2",
-      name: "Madhavan",
-      department: "Mechanical",
-      specialization: "Automobile Engineering",
-      email: "madhavan@email.com",
-      profile: "https://www.linkedin.com/in/madhavan",
-    },
-    {
-      id: "1",
-      name: "Shahbaz",
-      department: "CS",
-      specialization: "Software Engineering",
-      email: "shahbaz@email.com",
-      profile: "https://www.linkedin.com/in/shahbaz42",
-    },
-    {
-      id: "2",
-      name: "Madhavan",
-      department: "Mechanical",
-      specialization: "Automobile Engineering",
-      email: "madhavan@email.com",
-      profile: "https://www.linkedin.com/in/madhavan",
-    },
-    {
-      id: "1",
-      name: "Shahbaz",
-      department: "CS",
-      specialization: "Software Engineering",
-      email: "shahbaz@email.com",
-      profile: "https://www.linkedin.com/in/shahbaz42",
-    },
-    {
-      id: "2",
-      name: "Madhavan",
-      department: "Mechanical",
-      specialization: "Automobile Engineering",
-      email: "madhavan@email.com",
-      profile: "https://www.linkedin.com/in/madhavan",
-    },
-    {
-      id: "1",
-      name: "Shahbaz",
-      department: "CS",
-      specialization: "Software Engineering",
-      email: "shahbaz@email.com",
-      profile: "https://www.linkedin.com/in/shahbaz42",
-    },
-    {
-      id: "2",
-      name: "Madhavan",
-      department: "Mechanical",
-      specialization: "Automobile Engineering",
-      email: "madhavan@email.com",
-      profile: "https://www.linkedin.com/in/madhavan",
-    },
-  ];
+  const apiUrl = import.meta.env.VITE_API_URL; // Access the VITE_API_URL environment variable
+
+  if (!apiUrl) {
+    throw new Error('API URL is not defined in environment variables.');
+  }
+
+  try {
+    const response = await axios.get(`${apiUrl}/employees`);
+    return response.data.employees
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error; // Re-throw error to be handled by the caller
+  }
 }
+
+const LoadingOverlay = () => (
+  <div className="loading-overlay">
+    <div className="loading-spinner"></div>
+  </div>
+);
 
 export default function EmployeeData() {
   const [data, setData] = useState<Employee[]>([]);
@@ -134,7 +39,7 @@ export default function EmployeeData() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingOverlay />;
   }
 
   return (

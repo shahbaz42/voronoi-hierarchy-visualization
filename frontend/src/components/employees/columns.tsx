@@ -24,7 +24,7 @@ export type Employee = {
 // 1, Shahbaz, shahbaz@email.com, https://www.linkedin.com/in/shahbaz42, CS, Software Engineering
 export const columns: ColumnDef<Employee>[] = [
   {
-    accessorKey: "id",
+    accessorKey: "_id",
     header: ({ column }) => {
       return (
         <Button

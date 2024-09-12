@@ -15,6 +15,8 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export default function EmployeeRegistration() {
+    const apiUrl = import.meta.env.VITE_API_URL;
+
   const [employee, setEmployee] = useState({
     name: "",
     email: "",
@@ -42,12 +44,12 @@ export default function EmployeeRegistration() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    let data = JSON.stringify(employee);
+    const data = JSON.stringify(employee);
 
-    let config = {
+    const config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "http://localhost:8001/employees",
+      url: `${apiUrl}/employees`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -55,7 +57,7 @@ export default function EmployeeRegistration() {
     };
 
     try {
-      const response = await axios.request(config);
+      await axios.request(config);
       toast.success("Employee registered successfully");
       navigate("/admin");
     } catch (error) {
@@ -121,6 +123,8 @@ export default function EmployeeRegistration() {
                 <SelectItem value="Commerce">Commerce</SelectItem>
                 <SelectItem value="Law">Law</SelectItem>
                 <SelectItem value="Arts">Arts</SelectItem>
+                <SelectItem value="Social Sciences">Social Sciences</SelectItem>
+                <SelectItem value="Architecture">Architecture</SelectItem>
               </SelectContent>
             </Select>
           </div>
