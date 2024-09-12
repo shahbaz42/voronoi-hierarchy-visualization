@@ -194,6 +194,10 @@ export default function VoronoiVisualization() {
             (a: any, b: any) => b.weight - a.weight
           );
           setTopSpecializationsOfDept(specializationsSorted.slice(0, 4));
+
+          setSelectedSpecialization(null);
+          setSelectedFaculty(null);
+
         } else if (event.group?.type === "specialization") {
           setSelectedSpecialization(event.group.label);
           setSelectedSpecializationData(event.group);
@@ -204,10 +208,17 @@ export default function VoronoiVisualization() {
           );
 
           setTopFacultyOfSpecialization(facultySorted.slice(0, 4));
+
+          setSelectedDepartment(null);
+          setSelectedFaculty(null);
+
         } else if (event.group?.type === "faculty") {
+          
           setSelectedFaculty(event.group.label);
           setSelectedFacultyData(event.group.data);
           console.log("Selected Faculty", event.group.data);
+          setSelectedSpecialization(null);
+          setSelectedDepartment(null);
         }
       },
     });
