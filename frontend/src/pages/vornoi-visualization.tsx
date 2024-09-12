@@ -164,12 +164,7 @@ export default function VoronoiVisualization() {
     const foamtree = new FoamTree({
       id: "foamtree", // The ID of the container element where the chart will render
       dataObject: nestDat, // The nested data object
-      // onGroupSelectionChanged: (event: any) => {
-      //   console.log("Selected group:", event.group.label);
-      // },
       onGroupClick: (event: any) => {
-        console.log("Clicked group:", event.group.label);
-        console.log("event", event.group);
         setSelectedGroup(event.group.label);
 
         // if department is selected
@@ -216,7 +211,6 @@ export default function VoronoiVisualization() {
           
           setSelectedFaculty(event.group.label);
           setSelectedFacultyData(event.group.data);
-          console.log("Selected Faculty", event.group.data);
           setSelectedSpecialization(null);
           setSelectedDepartment(null);
         }
