@@ -206,6 +206,7 @@ export default function VoronoiVisualization() {
             </div>
             {/* <hr className="header-devider mt-4"></hr> */}
           </div>
+          <a href="/admin" className="btn btn-primary mt-8 fixed-bottom">Admin Panel</a>
         </div>
       </div>
     </div>
