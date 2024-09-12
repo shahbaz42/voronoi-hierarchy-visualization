@@ -95,6 +95,9 @@ async function getData(): Promise<Employee[]> {
 export default function VoronoiVisualization() {
   const [flatData, setFlatData] = useState<Employee[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [departments, setDepartments] = useState(0);
+  const [specializations, setSpecializations] = useState(0);
+
 
   useEffect(() => {
     async function fetchData() {
@@ -107,9 +110,20 @@ export default function VoronoiVisualization() {
   }, []);
 
   useEffect(() => {
+    const nestDat = nestData(flatData)
+
+    setDepartments(nestDat.groups.length)
+
+    const numberOfSpecializations = nestDat.groups.reduce((acc, department) => {
+      return acc + department.weight
+    }, 0)
+
+    setSpecializations(numberOfSpecializations)
+
+
     const foamtree = new FoamTree({
       id: "foamtree", // The ID of the container element where the chart will render
-      dataObject: nestData(flatData), // The nested data object
+      dataObject: nestDat, // The nested data object
     });
 
     // Handle window resize and adjust FoamTree size
@@ -145,25 +159,25 @@ export default function VoronoiVisualization() {
 
           <hr className="header-devider mt-4"></hr>
 
-          <div className="category-heading mt-4">Application Security</div>
-          <hr className="header-devider mt-4"></hr>
+          {/* <div className="category-heading mt-4">Application Security</div> */}
+          {/* <hr className="header-devider mt-4"></hr> */}
 
           <div className="other-details-box">
             <div className="other-details-content">
               <div className="other-details">
                 <div className="static-content">Number of departments</div>
                 <div className="other-devider">:</div>
-                <div className="other-value">4</div>
+                <div className="other-value">{departments}</div>
               </div>
               <div className="other-details">
                 <div className="static-content">Number of specializations</div>
                 <div className="other-devider">:</div>
-                <div className="other-value">12</div>
+                <div className="other-value">{specializations}</div>
               </div>
               <div className="other-details">
                 <div className="static-content">Number of faculty</div>
                 <div className="other-devider">:</div>
-                <div className="other-value">24</div>
+                <div className="other-value">{flatData.length}</div>
               </div>
             </div>
           </div>
@@ -173,21 +187,22 @@ export default function VoronoiVisualization() {
             <div className="category-heading mt-4">Top Departments</div>{" "}
             <div className="categories">
               <div className="category">Engineering</div>
-              <div className="category"> Commerce</div>
-              <div className="category"> Arts</div>
+              <div className="category"> Law</div>
+              <div className="category"> Medical</div>
             </div>
             {/* <hr className="header-devider mt-4"></hr> */}
           </div>
-
+            {/* to do : calculate it programatically */}
           <div className="category-box mt-8">
             <hr className="header-devider mt-4"></hr>
             <div className="category-heading mt-4">
               Top Specializations
             </div>{" "}
-            <div className="categories">
-              <div className="category">Finance</div>
-              <div className="category"> CS</div>
-              <div className="category"> Design</div>
+            {/* to do : calculate it programatically */}
+            <div className="categories"> 
+              <div className="category">Software Engineering</div>
+              <div className="category"> Data Science</div>
+              <div className="category"> Finance</div>
             </div>
             {/* <hr className="header-devider mt-4"></hr> */}
           </div>
