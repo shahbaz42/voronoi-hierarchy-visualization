@@ -1,1 +1,1 @@
-export { EmployeeController } from './employeeController';
+export { AdminController } from './adminController';

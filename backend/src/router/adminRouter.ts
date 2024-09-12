@@ -1,13 +1,24 @@
 import express from 'express';
-import { EmployeeController } from '../controllers';
+import { AdminController } from '../controllers';
 import { validateRequest } from '../utils';
 import { body } from 'express-validator';
+import { AuthMiddleware } from '../middlewares';
 
 const router = express.Router();
-const employeeController = new EmployeeController();
+const adminController = new AdminController();
 
 router.post(
-  '/',
+  '/login',
+  [
+    body('username').isString().notEmpty().withMessage('username is required'),
+    body('password').isString().notEmpty().withMessage('password is required'),
+  ],
+  validateRequest,
+  adminController.adminLogin
+);
+
+router.post(
+  '/employee',
   [
     body('name').isString().notEmpty().withMessage('name is required'),
     body('email').isEmail().notEmpty().withMessage('email is required'),
@@ -22,16 +33,18 @@ router.post(
       .withMessage('specialization is required'),
   ],
   validateRequest,
-  employeeController.createNewEmployee
+  AuthMiddleware,
+  adminController.createNewEmployee
 );
 
 router.delete(
-  '/',
+  '/employee',
   [body('id').isString().notEmpty().withMessage('id is required')],
   validateRequest,
-  employeeController.deleteEmployee
+  AuthMiddleware,
+  adminController.deleteEmployee
 );
 
-router.get('/', employeeController.getAllEmployees);
+router.get('/employee', adminController.getAllEmployees);
 
 export default router;

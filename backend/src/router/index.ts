@@ -1,1 +1,1 @@
-export { default as employeeRouter } from './employeeRouter';
+export { default as adminRouter } from './adminRouter';

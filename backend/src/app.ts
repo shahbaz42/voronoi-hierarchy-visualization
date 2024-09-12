@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
 import { ErrorHandler } from './utils';
-import { employeeRouter } from './router';
+import { adminRouter } from './router';
 import { connectToDatabase } from './database';
 import cors from 'cors';
 
@@ -39,7 +39,7 @@ app.get('/health', (req: Request, res: Response) => {
 });
 
 // API router
-app.use('/employees', employeeRouter);
+app.use('/admin', adminRouter);
 
 // Error handling
 app.use(ErrorHandler);
