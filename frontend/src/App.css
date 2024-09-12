@@ -193,7 +193,25 @@
   margin-right: 16px;
   margin-bottom: 10px;
 }
+
 .category-devider {
   margin-top: 0;
   margin-bottom: 20px;
+}
+
+.registration-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  width: 100%; /* Ensure wrapper takes full width */
+}
+
+.registration-form-container {
+  width: 100%; /* Make container take up the maximum width */
+  max-width: 400px; /* Ensure it doesn't exceed 400px */
+  flex-grow: 1; /* Allow it to grow if there's extra space */
+  padding: 20px; /* Optional: Add padding to make it look better */
+  box-sizing: border-box; /* Ensure padding doesn't add to the width */
 }

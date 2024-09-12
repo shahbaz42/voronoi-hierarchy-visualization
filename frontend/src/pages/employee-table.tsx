@@ -138,7 +138,8 @@ export default function EmployeeData() {
   }
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-6">
+      <h1 className="text-2xl font-bold text-center mb-6">Manage Employees</h1>
       <DataTable columns={columns} data={data} />
     </div>
   );
