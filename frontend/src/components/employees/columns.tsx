@@ -16,7 +16,7 @@ import { useContext } from "react";
 export type Employee = {
   id: string;
   name: string;
-  department: "CS" | "Mechanical" | "Civil" | "Electrical" | "Chemical" | "Arts" | "Medical" | "Commerce";
+  department: string;
   specialization: string;
   email: string;
   profile: string;
@@ -111,7 +111,7 @@ export const columns: ColumnDef<Employee>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const employee = row.original as any;
+      const employee = row.original as any
       const { deleteEmployee } = useContext(AuthContext);
       const handleDelete = () => {
         if (window.confirm(`Are you sure you want to delete ${employee.name}?`)) {

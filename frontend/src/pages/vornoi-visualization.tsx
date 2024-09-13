@@ -19,6 +19,7 @@ function nestData(flatData: Employee[]) {
     {
       label: string;
       weight: number;
+      type: string;
       groups: any[];
       specializationMap?: Record<string, any>;
     }
@@ -29,6 +30,7 @@ function nestData(flatData: Employee[]) {
     if (!departmentMap[item.department]) {
       departmentMap[item.department] = {
         label: item.department,
+        type: "department",
         weight: 0,
         groups: [],
       };
@@ -161,6 +163,8 @@ export default function VoronoiVisualization() {
 
     setSpecializations(numberOfSpecializations);
 
+    console.log(nestDat);
+
     const foamtree = new FoamTree({
       id: "foamtree", // The ID of the container element where the chart will render
       dataObject: nestDat, // The nested data object
@@ -169,17 +173,7 @@ export default function VoronoiVisualization() {
 
         // if department is selected
         if (
-          [
-            "Engineering",
-            "Law",
-            "Medical",
-            "Social Sciences",
-            "Civil",
-            "Commerce",
-            "CS",
-            "Architecture",
-            "Electrical",
-          ].includes(event.group.label)
+          event.group?.type === "department"
         ) {
           setSelectedDepartment(event.group.label);
           setSelectedDepartmentData(event.group);
@@ -245,7 +239,7 @@ export default function VoronoiVisualization() {
               <img className="employee-img" src={logo} />
             </div>
             <div className="employee-details">
-              Organization <br /> Details
+              Vendor <br /> Database
             </div>
           </div>
 

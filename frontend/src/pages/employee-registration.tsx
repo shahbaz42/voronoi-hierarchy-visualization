@@ -129,13 +129,12 @@ export default function EmployeeRegistration() {
                 <SelectValue placeholder="Select Department" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Engineering">Engineering</SelectItem>
-                <SelectItem value="Medical">Medical</SelectItem>
-                <SelectItem value="Commerce">Commerce</SelectItem>
-                <SelectItem value="Law">Law</SelectItem>
-                <SelectItem value="Arts">Arts</SelectItem>
-                <SelectItem value="Social Sciences">Social Sciences</SelectItem>
-                <SelectItem value="Architecture">Architecture</SelectItem>
+                <SelectItem value="Cryptography">Cryptography</SelectItem>
+                <SelectItem value="Threat Management">Threat Management</SelectItem>
+                <SelectItem value="Cloud Security">Cloud Security</SelectItem>
+                <SelectItem value="Blockchain">Blockchain</SelectItem>
+                <SelectItem value="Hardware Security">Hardware Security</SelectItem>
+                <SelectItem value="Digital Forensics">Digital Forensics</SelectItem>
               </SelectContent>
             </Select>
           </div>
